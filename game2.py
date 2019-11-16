@@ -118,13 +118,18 @@ def gun(universe):
 
 
 def print_list(arr):
+    g_start = '\033[92m'
+    g_end = '\033[0m'
+    print(g_start + '┌' + '──' * len(arr[0]) + '┐' + '\033[0m' + g_end)
     for i in range(len(arr)):
+        print(g_start + "│" + '\033[0m' + g_end, end = '')
         for j in  range(len(arr[i])):
             if arr[i][j] == 1:
-                print('\033[92m' + ' #' + '\033[0m', end = '')
+                print(g_start + '⬛' + '\033[0m' + g_end, end = '')
             else:
-                print('\033[91m' + ' *' + '\033[0m', end='')
-        print()
+                print(g_start + '⬜' + g_end, end='')
+        print(g_start + "│" + g_end)
+    print(g_start + '└' + '──' * len(arr) + '┘' + g_end)
 
 
 def game(field, iterations):
