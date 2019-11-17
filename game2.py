@@ -1,6 +1,7 @@
+import sys
 import os
 import time
-
+from PIL import Image
 
 #block
 def block(universe):
@@ -129,11 +130,11 @@ def print_list(arr):
             else:
                 print(g_start + '⬜' + g_end, end='')
         print(g_start + "│" + g_end)
-    print(g_start + '└' + '──' * len(arr) + '┘' + g_end)
+    print(g_start + '└' + '──' * len(arr[0]) + '┘' + g_end)
 
+'''
+def game(field,  iterations):
 
-def game(field, iterations):
-    
     universe = [[0]*field for i in range(field)]
     rows = len(universe)
     cols = len(universe[0])
@@ -154,15 +155,20 @@ def game(field, iterations):
             universe = line(universe)
         elif fun == "tube":
             universe = tube(universe)
+        elif universe == "image":
+            universe = img_to_field(image)
         else:
             universe = oscil(universe)
-    
+'''
 
+def game(universe,  iterations):
+    rows = len(universe)
+    cols = len(universe[0])
     for a in range(iterations):
         time.sleep(0.25)
         os.system('clear')
         print(f"{a} iteration:")
-        new_universe = [[0]*field for i in range(field)]
+        new_universe = [[0]*len(universe[0]) for i in range(len(universe))]
         
         for x in range(len(universe)):
             for y in range(len(universe[x])):
@@ -202,9 +208,38 @@ def game(field, iterations):
         universe = list(new_universe)
         print_list(new_universe)
 
+def img_to_field(image):
+    width, height = image.size[0], image.size[1]
+    aspect_ratio = height / width
+    new_height = 35
+    new_width = int(new_height / aspect_ratio)
+
+    image = image.resize((new_width, new_height))
+    pixels = image.getdata()
+
+    new_pixels = []
+    for pixel in pixels:
+        if pixel == 0:
+            new_pixels.append(1)
+        else:
+            new_pixels.append(0)
+    new_pixels_count = len(new_pixels)
+
+    field = [new_pixels[index:index + new_width]
+             for index in range(0, new_pixels_count, new_width)]
+    print_list(field)
+    return field
+
+    
 
 if __name__ == '__main__':
-    field = int(input("Enter suze of the field: "))
+    image = Image
+    field = []
+    if sys.argv[1]:
+        image = Image.open(sys.argv[1]).convert('1')
+        field = img_to_field(image)
+    #width = int(input("Enter width: "))
+    #height = int(input("Enter height:"))
     iterations = int(input("Enter number of iterations: "))
     game(field, iterations)
 
