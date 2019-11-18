@@ -1,9 +1,11 @@
 import sys
 import os
 import time
+import random
 from PIL import Image
 
-#block
+
+# block
 def block(universe):
     universe[1][1] = 1
     universe[2][2] = 1
@@ -12,7 +14,8 @@ def block(universe):
 
     return universe
 
-#line
+
+# line
 def line(universe):
     universe[20][0] = 1
     universe[20][1] = 1
@@ -20,7 +23,8 @@ def line(universe):
 
     return universe
 
-#tub
+
+# tube
 def tube(universe):
     universe[10][5] = 1
     universe[11][4] = 1
@@ -30,7 +34,7 @@ def tube(universe):
     return universe
 
 
-#boat
+# boat
 def boat(universe):
     universe[15][4] = 1
     universe[15][5] = 1
@@ -40,7 +44,7 @@ def boat(universe):
     return universe
 
 
-#oscil
+# oscil
 def oscil(universe):
     universe[4][3] = 1
     universe[5][3] = 1
@@ -51,7 +55,7 @@ def oscil(universe):
     return universe
 
 
-#beacon
+# beacon
 def beacon(universe):
     universe[5][5] = 1
     universe[5][6] = 1
@@ -62,7 +66,7 @@ def beacon(universe):
     return universe
 
 
-#horizontal
+# horizontal
 def horizontal(universe):
     universe[1][1] = 1
     universe[1][2] = 1
@@ -71,144 +75,17 @@ def horizontal(universe):
     return universe
 
 
-#glinder gun
-def gun(universe):
-    universe[5][1] = 1
-    universe[6][1] = 1
-    universe[5][2] = 1
-    universe[6][2] = 1
+# random universe
+def ran_gen(universe):
+    for i in range(len(universe)):
+        for j in range(len(universe[i])):
+            universe[i][j] = random.randint(0, 1)
 
-    universe[5][11] = 1
-    universe[6][11] = 1
-    universe[7][11] = 1
-    universe[4][12] = 1
-    universe[8][12] = 1
-    universe[3][13] = 1
-    universe[9][13] = 1
-    universe[3][14] = 1
-    universe[9][14] = 1
-    universe[6][15] = 1
-    universe[4][16] = 1
-    universe[8][16] = 1
-    universe[5][17] = 1
-    universe[6][17] = 1
-    universe[7][17] = 1
-    universe[6][18] = 1
-
-    universe[5][21] = 1
-    universe[4][21] = 1
-    universe[6][21] = 1
-    universe[5][22] = 1
-    universe[4][22] = 1
-    universe[6][22] = 1
-
-    universe[3][23] = 1
-    universe[7][23] = 1
-
-    universe[3][25] = 1
-    universe[7][25] = 1
-
-    universe[2][25] = 1
-    universe[8][25] = 1
-
-    universe[3][35] = 1
-    universe[4][35] = 1
-    universe[3][36] = 1
-    universe[4][36] = 1 
     return universe
 
 
-def print_list(arr):
-    g_start = '\033[92m'
-    g_end = '\033[0m'
-    print(g_start + '┌' + '──' * len(arr[0]) + '┐' + '\033[0m' + g_end)
-    for i in range(len(arr)):
-        print(g_start + "│" + '\033[0m' + g_end, end = '')
-        for j in  range(len(arr[i])):
-            if arr[i][j] == 1:
-                print(g_start + '⬛' + '\033[0m' + g_end, end = '')
-            else:
-                print(g_start + '⬜' + g_end, end='')
-        print(g_start + "│" + g_end)
-    print(g_start + '└' + '──' * len(arr[0]) + '┘' + g_end)
-
-'''
-def game(field,  iterations):
-
-    universe = [[0]*field for i in range(field)]
-    rows = len(universe)
-    cols = len(universe[0])
-    
-    fun = input("Chose figure: gun/horizontal/beacon/block/line/boat/tube/oscil:")
-    functions = ["gun", "horizontal", "beacon", "block", "line", "tube", "oscil"]
-    
-    if fun in functions:
-        if fun == "gun":
-            universe = gun(universe)
-        elif fun == "horizontal":
-            universe = horizontal(universe)
-        elif fun == "beacon":
-            universe = beacon(universe)
-        elif fun == "block":
-            universe = block(universe)
-        elif fun == "line":
-            universe = line(universe)
-        elif fun == "tube":
-            universe = tube(universe)
-        elif universe == "image":
-            universe = img_to_field(image)
-        else:
-            universe = oscil(universe)
-'''
-
-def game(universe,  iterations):
-    rows = len(universe)
-    cols = len(universe[0])
-    for a in range(iterations):
-        time.sleep(0.25)
-        os.system('clear')
-        print(f"{a} iteration:")
-        new_universe = [[0]*len(universe[0]) for i in range(len(universe))]
-        
-        for x in range(len(universe)):
-            for y in range(len(universe[x])):
-               
-                num_neighbours = 0 
-                if x + 1 < rows: 
-                    if universe[x + 1][y] == 1: 
-                        num_neighbours += 1 
-                if y + 1 < cols: 
-                    if universe[x][y + 1] == 1: 
-                        num_neighbours += 1 
-                if x + 1 < rows and y + 1 < cols: 
-                    if universe[x + 1][y + 1] == 1: 
-                        num_neighbours += 1 
-                if x - 1 >= 0: 
-                    if universe[x - 1][y] == 1: 
-                        num_neighbours += 1 
-                if y - 1 >= 0: 
-                    if universe[x][y - 1] == 1: 
-                        num_neighbours += 1 
-                if x - 1 >= 0 and y + 1 < cols: 
-                    if universe[x - 1][y + 1] == 1: 
-                        num_neighbours += 1 
-                if x + 1 < rows and y - 1 >= 0: 
-                    if universe[x + 1][y - 1] == 1: 
-                        num_neighbours += 1
-                if x - 1 >= 0 and y - 1 >= 0:
-                    if universe[x - 1][y - 1] == 1:
-                        num_neighbours += 1
-                if universe[x][y] and not 2 <= num_neighbours <= 3: 
-                    new_universe[x][y] = 0 
-                elif num_neighbours == 3: 
-                    new_universe[x][y] = 1
-                elif universe[x][y]  and  num_neighbours == 2:
-                    new_universe[x][y] = 1
-        
-        universe = list(new_universe)
-        print_list(new_universe)
-
-def img_to_field(image):
+# image to universe
+def img_to_universe(image):
     width, height = image.size[0], image.size[1]
     aspect_ratio = height / width
     new_height = 35
@@ -225,22 +102,113 @@ def img_to_field(image):
             new_pixels.append(0)
     new_pixels_count = len(new_pixels)
 
-    field = [new_pixels[index:index + new_width]
-             for index in range(0, new_pixels_count, new_width)]
-    print_list(field)
-    return field
+    universe = [new_pixels[index:index + new_width]
+                for index in range(0, new_pixels_count, new_width)]
+    print_list(universe)
+    return universe
 
-    
+
+def print_list(arr):
+    g_start = '\033[92m'
+    g_end = '\033[0m'
+    print(g_start + '┌' + '──' * len(arr[0]) + '┐' + '\033[0m' + g_end)
+    for i in range(len(arr)):
+        print(g_start + "│" + '\033[0m' + g_end, end='')
+        for j in range(len(arr[i])):
+            if arr[i][j] == 1:
+                print(g_start + '⬛' + '\033[0m' + g_end, end='')
+            else:
+                print(g_start + '⬜' + g_end, end='')
+        print(g_start + "│" + g_end)
+    print(g_start + '└' + '──' * len(arr[0]) + '┘' + g_end)
+
+
+def game(iterations, universe=None):
+    fun = ''
+    if universe:
+        fun = "image"
+    else:
+        field_size = int(input("Enter size of the square universe: "))
+        universe = [[0]*field_size for i in range(field_size)]
+
+    rows = len(universe)
+    cols = len(universe[0])
+
+    if fun != "image":
+        fun = input("Chose figure: random/\
+                                   horizontal/beacon/\
+                                   block/line/boat/tube/oscil:")
+        functions = ["random", "horizontal", "beacon",
+                     "block", "line", "tube", "oscil"]
+
+        if fun in functions:
+            if fun == "horizontal":
+                universe = horizontal(universe)
+            elif fun == "beacon":
+                universe = beacon(universe)
+            elif fun == "block":
+                universe = block(universe)
+            elif fun == "line":
+                universe = line(universe)
+            elif fun == "tube":
+                universe = tube(universe)
+            elif fun == "random":
+                universe = ran_gen(universe)
+            else:
+                universe = oscil(universe)
+
+    for a in range(iterations):
+        time.sleep(0.1)
+        os.system('clear')
+        print(f"{a} iteration:")
+        new_universe = [[0]*len(universe[0]) for i in range(len(universe))]
+
+        for x in range(len(universe)):
+            for y in range(len(universe[x])):
+
+                num_neighbours = 0
+                if x + 1 < rows:
+                    if universe[x + 1][y] == 1:
+                        num_neighbours += 1
+                if y + 1 < cols:
+                    if universe[x][y + 1] == 1:
+                        num_neighbours += 1
+                if x + 1 < rows and y + 1 < cols:
+                    if universe[x + 1][y + 1] == 1:
+                        num_neighbours += 1
+                if x - 1 >= 0:
+                    if universe[x - 1][y] == 1:
+                        num_neighbours += 1
+                if y - 1 >= 0:
+                    if universe[x][y - 1] == 1:
+                        num_neighbours += 1
+                if x - 1 >= 0 and y + 1 < cols:
+                    if universe[x - 1][y + 1] == 1:
+                        num_neighbours += 1
+                if x + 1 < rows and y - 1 >= 0:
+                    if universe[x + 1][y - 1] == 1:
+                        num_neighbours += 1
+                if x - 1 >= 0 and y - 1 >= 0:
+                    if universe[x - 1][y - 1] == 1:
+                        num_neighbours += 1
+                if universe[x][y] and not 2 <= num_neighbours <= 3:
+                    new_universe[x][y] = 0
+                elif num_neighbours == 3:
+                    new_universe[x][y] = 1
+                elif universe[x][y] and num_neighbours == 2:
+                    new_universe[x][y] = 1
+
+        universe = list(new_universe)
+        print_list(new_universe)
+
 
 if __name__ == '__main__':
     image = Image
-    field = []
-    if sys.argv[1]:
+    universe = None
+    if len(sys.argv) > 1:
         image = Image.open(sys.argv[1]).convert('1')
-        field = img_to_field(image)
-    #width = int(input("Enter width: "))
-    #height = int(input("Enter height:"))
+        universe = img_to_universe(image)
     iterations = int(input("Enter number of iterations: "))
-    game(field, iterations)
+    game(iterations, universe)
 
     print("THATS ALL FOLKS!")
