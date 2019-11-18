@@ -88,7 +88,7 @@ def ran_gen(universe):
 def img_to_universe(image):
     width, height = image.size[0], image.size[1]
     aspect_ratio = height / width
-    new_height = 35
+    new_height = int(input("Enter new height(10-20 recomended): "))
     new_width = int(new_height / aspect_ratio)
 
     image = image.resize((new_width, new_height))
@@ -105,7 +105,17 @@ def img_to_universe(image):
     universe = [new_pixels[index:index + new_width]
                 for index in range(0, new_pixels_count, new_width)]
     print_list(universe)
-    return universe
+    
+    # magic numbers 38 and 35 depends from terminal size
+    # my font size in terminal allows smooth work of script only for such
+    # numbers 
+    new_universe = [[0]*38 for i in range(35)]
+    
+    for i in range(len(universe)):
+        for j in range(len(universe[0])):
+            new_universe[i][j] = universe[i][j]
+
+    return new_universe
 
 
 def print_list(arr):
@@ -135,9 +145,8 @@ def game(iterations, universe=None):
     cols = len(universe[0])
 
     if fun != "image":
-        fun = input("Chose figure: random/\
-                                   horizontal/beacon/\
-                                   block/line/boat/tube/oscil:")
+        print("Start figures: random/boat/beacon")
+        fun = input("Chose figure: ")
         functions = ["random", "horizontal", "beacon",
                      "block", "line", "tube", "oscil"]
 
@@ -211,4 +220,4 @@ if __name__ == '__main__':
     iterations = int(input("Enter number of iterations: "))
     game(iterations, universe)
 
-    print("THATS ALL FOLKS!")
+    print(f"Passed {iterations} iterations of game of life:)")
